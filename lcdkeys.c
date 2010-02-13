@@ -5,10 +5,16 @@
 
 int get_key_updown(usblcd_operations* screen)
 {
-    int val;
-    int type = 0;
-    usblcd_event* e = screen->read_events(screen);
-    while(e && e->type) e=screen->read_events(screen);
+    /* read_events returns NULL if we get 100000 packets with no data.
+       e->type == 0 for keypress
+       e->type == 1 for IR
+       e->data[0] is the key pressed
+    */
+    usblcd_event* e;
+    do //keep going until we have a valid e with a keypress event type
+    {
+        e = screen->read_events(screen);
+    }while(!(e && !(e->type)));
     return (int)(e->data[0]);
 }
 
