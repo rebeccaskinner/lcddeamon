@@ -9,13 +9,12 @@ int read_loop(usblcd_operations* screen)
     {
         if(e->type) //not keyboard
             continue;
+        printf("got %d bytes\n",e->length);
         int dval = (int)(e->data);
-        char dstr[e->length + 1];
-        strncpy(e->data, dstr, e->length);
-        printf("data as string: %s\n",dstr);
         printf("byte one: %d\n",(int)(e->data[0]));
+        printf("byte two: %d\n",(int)(e->data[1]));
         if(dval)
-            printf("read key:\n%d\tdec\n%x\thex\n",dval,dval);
+            printf("read key:%d\n",dval);
         else
             printf("key released\n");
     }
