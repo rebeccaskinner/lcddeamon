@@ -2,11 +2,10 @@ CC=gcc
 CFLAGS= -g                              \
         -O2                             \
         --std=gnu99                     \
-        -I/usr/local/include            \
-        `pkg-config --cflags glib-2.0`
+        `pkg-config --cflags glib-2.0` 
 
-LFLAGS= -lusblcd                        \
-        `pkg-config --libs glib-2.0`
+LFLAGS= `pkg-config --libs glib-2.0` \
+	-lpicoLCD
 
 OBJS=test.o
 
