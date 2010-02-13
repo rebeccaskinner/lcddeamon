@@ -8,7 +8,7 @@ int read_loop(usblcd_operations* screen)
     {
         if(e->type) //not keyboard
             continue;
-        int dval = *((int*)(e->data));
+        int dval = (int)(e->data);
         if(dval)
             printf("read key:\n%d\tdec\n%x\thex\n",dval,dval);
         else
