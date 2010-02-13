@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <usblcd.h>
 #include "lcdkeys.h"
 #include "keymap.h"
@@ -8,7 +9,11 @@ int get_key_updown(usblcd_operations* screen)
     usblcd_event* e;
     do
     {
-        e = screen->read_events(screen);
+        if(NULL == (e = screen->read_events(screen)))
+	{
+	    printf("read_events returned NULL...\n");
+	    continue;
+	}
     }while(e->type);
     return (int)(e->data[0]);
 }
@@ -55,5 +60,3 @@ const char* key_tostr(int key)
             return "KEY_UNKNOWN";
     }
 }
-
-
