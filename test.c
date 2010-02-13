@@ -8,10 +8,9 @@ int main(void)
     /* init the USB LCD */
     mylcd->init(mylcd);
     /* sets backlight to on */
-    mylcd->backlight(mylcd,1);
+    mylcd->backlight(mylcd,0);
     /* close the USB LCD device */
     mylcd->close(mylcd);
-
     return 0;
 }
 
