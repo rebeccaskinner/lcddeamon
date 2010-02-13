@@ -6,30 +6,21 @@
 int get_key_updown(usblcd_operations* screen)
 {
     int val;
-    usblcd_event* e;
-    do
-    {
-        if(NULL == (e = screen->read_events(screen)))
-	{
-	    printf("read_events returned NULL...\n");
-	    continue;
-	}
-    }while(e->type);
+    int type = 0;
+    usblcd_event* e = screen->read_events(screen);
+    while(e && e->type) e=screen->read_events(screen);
     return (int)(e->data[0]);
 }
 
-int keypoll(usblcd_operations* screen)
-{
+int keypoll(usblcd_operations* screen) {
     int key_data = get_key_updown(screen);
     if(0 != get_key_updown(screen))
         return -1;
     return key_data;
 }
 
-const char* key_tostr(int key)
-{
-    switch(key)
-    {
+const char* key_tostr(int key) {
+    switch(key) {
         case 0x0:
             return "KEY_RELEASED"; 
         case 0x1:
