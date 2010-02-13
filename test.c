@@ -1,5 +1,6 @@
 #include <usblcd.h>
 #include <stdio.h>
+#include <string.h>
 
 int read_loop(usblcd_operations* screen)
 {
@@ -9,6 +10,10 @@ int read_loop(usblcd_operations* screen)
         if(e->type) //not keyboard
             continue;
         int dval = (int)(e->data);
+        char dstr[e->length + 1];
+        strncpy(e->data, dstr, e->length);
+        printf("data as string: %s\n",dstr);
+        printf("byte one: %d\n",(int)(e->data[0]));
         if(dval)
             printf("read key:\n%d\tdec\n%x\thex\n",dval,dval);
         else
