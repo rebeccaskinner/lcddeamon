@@ -4,21 +4,15 @@
 int read_loop(usblcd_operations* screen)
 {
     usblcd_event* e;
-    while(e  = screen->read_events(screen))
+    while(e = screen->read_events(screen))
     {
-        printf("got %d bytes of data from input:\n",e->length);
-        switch(e->type)
-        {
-            case 0:
-                printf("input type=keypad\n");
-                break;
-            case 1:
-                printf("input type=IR\n");
-                break;
-            default:
-                printf("Unknown input type(%d)\n",e->type);
-                break;
-        }
+        if(e->type) //not keyboard
+            continue;
+        int dval = *((int*)(e->data));
+        if(dval)
+            printf("read key:\n%d\tdec\n%x\thex\n",dval,dval);
+        else
+            printf("key released\n");
     }
     return 0;
 }
