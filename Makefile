@@ -7,7 +7,7 @@ CFLAGS= -g                              \
 LFLAGS= `pkg-config --libs glib-2.0` \
 	-lpicoLCD
 
-OBJS=test.o
+OBJS=test.o lcdkeys.o
 
 all: lcdd
 
