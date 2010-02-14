@@ -1,13 +1,15 @@
 CC=gcc
-CFLAGS= -g                              \
-        -O2                             \
-        --std=gnu99                     \
-        `pkg-config --cflags glib-2.0` 
+CFLAGS= -g                                \
+        -O2                               \
+        --std=gnu99                       \
+        `pkg-config --cflags glib-2.0`    \
+        `pkg-config --cflags gmodule-2.0` 
 
-LFLAGS= `pkg-config --libs glib-2.0` \
+LFLAGS= `pkg-config --libs glib-2.0`    \
+        `pkg-config --libs gmodule-2.0` \
 	-lpicoLCD
 
-OBJS=test.o lcdkeys.o
+OBJS=lcdd.o lcdkeys.o lcd_module.o lcd_utils.o lcd_config.o
 
 all: lcdd
 

@@ -16,12 +16,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                   *
  ********************************************************************************
 */ 
-
-#include <usblcd.h>
+#ifndef __LCD_MODULE_H
+#define __LCD_MODULE_H
 #include <glib.h>
 
-int plugin_init(usblcd_operations* ops);
-int plugin_run(usblcd_operations* ops);
-int plugin_get_status(char* toprow, char* bottomrow);
-int plugin_exit();
-char* getname();
+typedef struct {
+    int (*init)(usblcd_operations* ops);
+    int (*run)(usblcd_operations* ops);
+    int (*view)(char* toprow, char* bottomrow);
+    int (*exit)();
+    GModule* module;
+}lcd_module;
+
+GSList* load_modules(const char* path);
+void    unload_module(lcd_module* m);
+
+#endif

@@ -16,12 +16,25 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                   *
  ********************************************************************************
 */ 
-
 #include <usblcd.h>
-#include <glib.h>
+#include <stdio.h>
+#include <string.h>
+#include "lcdkeys.h"
 
-int plugin_init(usblcd_operations* ops);
-int plugin_run(usblcd_operations* ops);
-int plugin_get_status(char* toprow, char* bottomrow);
-int plugin_exit();
-char* getname();
+int main(void)
+{
+    usblcd_operations *mylcd;
+    /* init hid device and usblcd_operations structure */
+    mylcd = new_usblcd_operations();
+    /* init the USB LCD */
+    mylcd->init(mylcd);
+    /* sets backlight to on */
+    mylcd->backlight(mylcd,1);
+    printf("%s\n",key_tostr(keypoll(mylcd)));
+    mylcd->settext(mylcd, 0, 0, "Hello World");
+    mylcd->settext(mylcd, 1, 10, "Hello");
+    /* close the USB LCD device */
+    mylcd->close(mylcd);
+    return 0;
+}
+
