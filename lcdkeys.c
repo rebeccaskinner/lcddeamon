@@ -5,14 +5,8 @@
 
 int get_key_updown(usblcd_operations* screen)
 {
-    /* read_events returns NULL if we get 100000 packets with no data.
-       e->type == 0 for keypress
-       e->type == 1 for IR
-       e->data[0] is the key pressed
-    */
     usblcd_event* e;
-    do //keep going until we have a valid e with a keypress event type
-    {
+    do {
         e = screen->read_events(screen);
     }while(!(e && !(e->type)));
     return (int)(e->data[0]);
@@ -20,40 +14,25 @@ int get_key_updown(usblcd_operations* screen)
 
 int keypoll(usblcd_operations* screen) {
     int key_data = get_key_updown(screen);
-    if(0 != get_key_updown(screen))
-        return -1;
+    if(0 != get_key_updown(screen)) return -1;
     return key_data;
 }
 
 const char* key_tostr(int key) {
     switch(key) {
-        case 0x0:
-            return "KEY_RELEASED"; 
-        case 0x1:
-            return "KEY_PLUS"; 
-        case 0x2:
-            return "KEY_MINUS"; 
-        case 0x3:
-            return "KEY_F1"; 
-        case 0x4:
-            return "KEY_F2"; 
-        case 0x5:
-            return "KEY_F3"; 
-        case 0x6:
-            return "KEY_F4"; 
-        case 0x7:
-            return "KEY_F5"; 
-        case 0x8:
-            return "KEY_LEFT"; 
-        case 0x9:
-            return "KEY_RIGHT"; 
-        case 0xa:
-            return "KEY_UP"; 
-        case 0xb:
-            return "KEY_DOWN"; 
-        case 0xc:
-            return "KEY_ENTER"; 
-        default:
-            return "KEY_UNKNOWN";
+        case KEY_RELEASED: return "KEY_RELEASED"; 
+        case KEY_PLUS:     return "KEY_PLUS"; 
+        case KEY_MINUS:    return "KEY_MINUS"; 
+        case KEY_F1:       return "KEY_F1"; 
+        case KEY_F2:       return "KEY_F2"; 
+        case KEY_F3:       return "KEY_F3"; 
+        case KEY_F4:       return "KEY_F4"; 
+        case KEY_F5:       return "KEY_F5"; 
+        case KEY_LEFT:     return "KEY_LEFT"; 
+        case KEY_RIGHT:    return "KEY_RIGHT"; 
+        case KEY_UP:       return "KEY_UP"; 
+        case KEY_DOWN:     return "KEY_DOWN"; 
+        case KEY_ENTER:    return "KEY_ENTER"; 
+        default:           return "KEY_UNKNOWN";
     }
 }
