@@ -13,6 +13,7 @@ int main(void)
     /* sets backlight to on */
     mylcd->backlight(mylcd,1);
     printf("%s\n",key_tostr(keypoll(mylcd)));
+    mylcd->clear(mylcd);
     mylcd->settext(mylcd, 0, 0, "Hello World");
     mylcd->settext(mylcd, 1, 10, "Hello");
     /* close the USB LCD device */
