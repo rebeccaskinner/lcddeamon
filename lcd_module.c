@@ -17,12 +17,17 @@
  ********************************************************************************
 */ 
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <glib.h>
+#include <gmodule.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <errno.h>
+#include <usblcd.h>
+#include "lcd_module.h"
 
 lcd_module* load_module(const char* path, const char* name) {
     struct stat buf;
@@ -30,22 +35,22 @@ lcd_module* load_module(const char* path, const char* name) {
         fprintf(stderr,"Plugin loading failure, invalid name or path\n");
         return NULL;
     }
-    if(fstat(path, &buf)) {
+    if(stat(path, &buf)) {
         printf("Cannot load plugin \"%s\" - %s\n",name,strerror(errno));
         return NULL;
     }
     lcd_module* m = g_malloc0(sizeof(lcd_module));
-    if(NULL == m->module = g_module_open(path,G_MODULE_BIND_LOCAL)) {
-        printf("Unknown failure while attemping to load module\n");
+    if(NULL == (m->module = g_module_open(path,G_MODULE_BIND_LOCAL))) {
+        fprintf(stderr,"Unknown failure while attemping to load module\n");
         g_free(m);
         return NULL;
     }
-    g_module_symbol(m->module, "plugin_init", m->init);
-    g_module_symbol(m->module, "plugin_exit", m->exit);
-    g_module_symbol(m->module, "plugin_view", m->view);
-    g_module_symbol(m->module, "plugin_view", m->run);
+    g_module_symbol(m->module, "plugin_init", (gpointer)m->init);
+    g_module_symbol(m->module, "plugin_exit", (gpointer)m->exit);
+    g_module_symbol(m->module, "plugin_view", (gpointer)m->view);
+    g_module_symbol(m->module, "plugin_view", (gpointer)m->run);
     if(NULL == m->init || NULL == m->run || NULL == m->view){
-        printf("Plugin does not contain the required symbols, not loading\n");
+        fprintf(stderr,"Plugin does not contain the required symbols, not loading\n");
         unload_module(m);
         return NULL;
     }
@@ -54,6 +59,6 @@ lcd_module* load_module(const char* path, const char* name) {
 
 void unload_module(lcd_module* m) {
     if(!m) return;
-    if(m->module) g_unload_module(m->module);
+    if(m->module) g_module_close(m->module);
     g_free(m);
 }

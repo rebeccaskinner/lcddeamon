@@ -24,10 +24,12 @@
 int get_key_updown(usblcd_operations* screen)
 {
     usblcd_event* e;
-    do {
-        e = screen->read_events(screen);
-    }while(!(e && !(e->type)));
-    return (int)(e->data[0]);
+    int dat;
+    do { e = screen->read_events(screen); }while(!e);
+    if(e->type) dat = -1;
+    else dat = (int)(e->data[0]);
+    free(e);
+    return dat;
 }
 
 int keypoll(usblcd_operations* screen) {

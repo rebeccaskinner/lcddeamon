@@ -19,6 +19,7 @@
 #ifndef __LCD_MODULE_H
 #define __LCD_MODULE_H
 #include <glib.h>
+#include <gmodule.h>
 
 typedef struct {
     int (*init)(usblcd_operations* ops);
