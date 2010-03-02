@@ -21,7 +21,7 @@
 #include <string.h>
 #include "lcdkeys.h"
 
-int main(void)
+int main(int argc, char** argv)
 {
     usblcd_operations *mylcd;
     /* init hid device and usblcd_operations structure */
