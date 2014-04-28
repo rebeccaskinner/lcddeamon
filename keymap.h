@@ -1,5 +1,5 @@
 /*
- Copyright 2010 Tim Skinner
+ Copyright 2010, 2014 Rebecca Skinner
 
  ********************************************************************************
  * This program is free software: you can redistribute it and/or modify it      *
